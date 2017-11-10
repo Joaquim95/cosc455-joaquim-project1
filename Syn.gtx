@@ -1,0 +1,17 @@
+\BEGIN
+	\TITLE[TittLe]
+	text
+	\\
+	\parab
+	\def[def=use]
+	text
+	# heading
+	* bold *
+	\use[def]
+	![pic](www.towson.edu/)
+	[link](www.towson.edu/)
+	+list1
+	+ * bold *
+	+ [link](www.towson.edu/)
+	\parae
+\END
