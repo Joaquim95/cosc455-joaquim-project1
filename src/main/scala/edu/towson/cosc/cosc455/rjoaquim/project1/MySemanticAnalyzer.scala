@@ -1,6 +1,7 @@
 package edu.towson.cosc.cosc455.rjoaquim.project1
 
 class MySemanticAnalyzer {
+  var builder : String = ""
   /**Flip Stack
     *
     * This method takes the original parse tree and flips it so that the top of
@@ -17,7 +18,7 @@ class MySemanticAnalyzer {
       }
       else if(Compiler.parseTree.top.equalsIgnoreCase((CONSTANTS.DEFB))){
         Compiler.parseTree.pop()
-        for(i<-0 to 2){
+        for(i<-0 to 3){
           Compiler.flipedStack.pop()
         }
       }
@@ -47,9 +48,10 @@ class MySemanticAnalyzer {
         System.exit(1)
       }
     }
-    if(Compiler.holder.top.equals(find)){
+    if(Compiler.holder.top.trim.equals(find)){
       Compiler.parseTree.push(Compiler.holder.pop())
       Compiler.parseTree.push(Compiler.holder.pop())
+      Compiler.flipedStack.push(" ")
       Compiler.flipedStack.push(Compiler.holder.top)
       while(!(Compiler.holder.isEmpty)){
         Compiler.parseTree.push(Compiler.holder.pop())
@@ -60,13 +62,11 @@ class MySemanticAnalyzer {
       findDef(find)
     }
   }
-  /*def removeWhiteSpace(word : String): String ={
-    if(CONSTANTS.whiteSpace contains(word.last.toString)){
-      removeWhiteSpace(word.dropRight(1))
-    }
-    word
-  }*/
 
+  /**Convert to HTML
+    *
+    *This method takes the gittex markup and converts it to HTML
+    */
   def converToHTML():Unit ={
     while (!(Compiler.flipedStack.isEmpty)){
       if(Compiler.flipedStack.top.equalsIgnoreCase(CONSTANTS.DOCB)){
@@ -89,7 +89,9 @@ class MySemanticAnalyzer {
       else if(Compiler.flipedStack.top.equalsIgnoreCase(CONSTANTS.HEADING)){
         Compiler.fileContents += "<h1>"
         Compiler.flipedStack.pop()
-        Compiler.fileContents += Compiler.flipedStack.pop()
+        textBuilder()
+        Compiler.fileContents += builder
+        builder = ""
         Compiler.fileContents += "</h1>"
         Compiler.flipedStack.pop()
       }
@@ -111,9 +113,11 @@ class MySemanticAnalyzer {
       else if(Compiler.flipedStack.top.equalsIgnoreCase(CONSTANTS.LISTITEM)){
         Compiler.fileContents += "<li>"
         Compiler.flipedStack.pop()
-        Compiler.fileContents += Compiler.flipedStack.pop()
+        listBuilder()
+        Compiler.fileContents += builder
+        builder = ""
         Compiler.fileContents += "</li>"
-        Compiler.flipedStack.pop()
+
       }
       else if(Compiler.flipedStack.top.equalsIgnoreCase(CONSTANTS.NEWLINE)){
         Compiler.fileContents += "<br>"
@@ -125,8 +129,7 @@ class MySemanticAnalyzer {
         Compiler.flipedStack.pop()
         Compiler.flipedStack.pop()
         Compiler.fileContents += "<a href= " + Compiler.flipedStack.pop() +"> " + a + "</a>"
-        Compiler.fileContents += Compiler.flipedStack.pop()
-
+        Compiler.flipedStack.pop()
       }
       else if(Compiler.flipedStack.top.equalsIgnoreCase(CONSTANTS.IMAGEB)){
         Compiler.flipedStack.pop()
@@ -139,6 +142,47 @@ class MySemanticAnalyzer {
       else{
         Compiler.fileContents += Compiler.flipedStack.pop()
       }
+    }
+  }
+
+  /**list Builder
+    * This method is called when converting a list to HTML to piece together the inner text
+    */
+  def listBuilder(): Unit ={
+    if (CONSTANTS.validText contains Compiler.flipedStack.top.charAt(0).toString.toLowerCase()){
+
+      builder += Compiler.flipedStack.pop()
+      listBuilder()
+    }
+    else if(CONSTANTS.BOLD == Compiler.flipedStack.top.charAt(0).toString) {
+      builder += Compiler.flipedStack.pop()
+      listBuilder()
+    }
+    else if(CONSTANTS.LINKB == Compiler.flipedStack.top.charAt(0).toString) {
+      builder += Compiler.flipedStack.pop()
+      listBuilder()
+    }
+    else if(CONSTANTS.BRACKETE == Compiler.flipedStack.top.charAt(0).toString) {
+      builder += Compiler.flipedStack.pop()
+      listBuilder()
+    }
+    else if(CONSTANTS.ADDRESSB == Compiler.flipedStack.top.charAt(0).toString) {
+      builder += Compiler.flipedStack.pop()
+      listBuilder()
+    }
+    else if(CONSTANTS.ADDRESSE == Compiler.flipedStack.top.charAt(0).toString) {
+      builder += Compiler.flipedStack.pop()
+      listBuilder()
+    }
+  }
+
+  /**text builder
+    * This method is used to piece together the text of a header
+    */
+  def textBuilder(): Unit ={
+    if (CONSTANTS.validText contains Compiler.flipedStack.top.charAt(0).toString.toLowerCase()){
+      builder += Compiler.flipedStack.pop()
+      textBuilder()
     }
   }
 }

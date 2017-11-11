@@ -43,7 +43,6 @@ class MyLexicalAnalyzer extends LexicalAnalyzer {
     * returns the first char from Compiler.fileContents
     */
   override def getChar(): Char = {
- //   println(Compiler.fileContents)
     if(Compiler.fileContents == ""){
       println("Lexical error- Out of Chars")
       System.exit(1)
@@ -122,7 +121,6 @@ class MyLexicalAnalyzer extends LexicalAnalyzer {
     }
     /**must be the beginning of image token*/
     else if (c == '!'){
-      //val a = getChar()
       addChar(getChar())
       if(Compiler.currentToken.equalsIgnoreCase("!["))
         true

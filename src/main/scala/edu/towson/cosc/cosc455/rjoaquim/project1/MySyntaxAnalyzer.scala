@@ -199,6 +199,10 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
       else if (Compiler.currentToken.equalsIgnoreCase(CONSTANTS.NEWLINE)) {
         newline()
       }
+      else if(Compiler.currentToken.equalsIgnoreCase((CONSTANTS.PARAE))){
+        println("Syntax error- you cannot exit a paragraph before entering it")
+        System.exit(1)
+      }
       else {
         innerText()
       }
@@ -435,6 +439,10 @@ class MySyntaxAnalyzer extends SyntaxAnalyzer{
       innerItem()
     }
   }
+
+  /**Check End
+    * Checks if anything is posted after /end and throws an error if there is anything written
+    */
   def checkEnd() : Unit = {
     if(Compiler.fileContents != ""){
       for(i<- 0 to Compiler.fileContents.length -1) {

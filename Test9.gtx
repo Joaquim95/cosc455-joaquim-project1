@@ -1,7 +1,7 @@
 \BEGIN
-	\DEF[lastname= Simpson]
-	\DEF[hname= Homer]
-	\DEF[bname= Bart]
+	\DEF[lastname = Simpson]
+	\DEF[hname = Homer]
+	\DEF[bname = Bart]
 	\TITLE[Variables]
 
 	\PARAB
